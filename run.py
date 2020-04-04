@@ -45,18 +45,18 @@ while run:
     # Testing color v
     # target_color = (255, 96, 0, 255)
     targets = [(0, 0)]
-    for x in range(size[0]):
-        for y in range(size[1]):
+    for x in range(0, size[0], 2):
+        for y in range(0, size[1], 2):
             if pixs[x, y] == target_color and notClose((x+840, y+730), (targets[-1][0], targets[-1][1])):
-                # Add coords to target list, adjusting 
-                # them for the fullscreen screenshot
-                targets.append((x+840, y+730))
+                if (x, y) != mouse.position:
+                    # Add coords to target list, adjusting 
+                    # them for the fullscreen screenshot
+                    targets.append((x+840, y+730))
 
     # Go through each target in the gathered list
     # and click in that location
     for t in targets[1:]:
         # Move the mouse over the target
-        time.sleep(0.01)
         mouse.position = ((t[0]/3840) * 1920, (t[1]/2400) * 1200)
         time.sleep(0.01)
 
