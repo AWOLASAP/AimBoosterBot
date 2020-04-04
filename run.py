@@ -10,13 +10,18 @@ def quit():
     run = False
 
 # Function to check to see if two locations 
-# are too close to each other (50px x and y)
+# are too close to each other (30px x and y)
 def notClose(loc1, loc2):
-    if abs(loc1[0] - loc2[0]) > 50:
-        if abs(loc1[1] - loc2[1]) > 50:
+    if abs(loc1[0] - loc2[0]) > 30:
+        if abs(loc1[1] - loc2[1]) > 30:
             return True
     return False
 
+# Function to convert the image location
+# coordinates to full screen coordinates 
+# that can be used by pynput for the mouse
+def convertToFullscreen(coord):
+    return (coord[0] + 840, coord[1] + 730)
 
 # Add hotkey for emergency quiting
 keyboard.add_hotkey(' ', quit)
@@ -44,11 +49,10 @@ while run:
     for x in range(size[0]):
         for y in range(size[1]):
             pixel = pixs[x, y]
-            if pixel == target_color and notClose((x, y), (targets[-1][0], targets[-1][1])):
-                targets.append((x, y))
-    
-    # For debugging
-    break
+            if pixel == target_color and notClose((x+840, y+730), (targets[-1][0], targets[-1][1])):
+                # Add coords to target list, adjusting 
+                # them for the fullscreen
+                targets.append((x+840, y+730))
 
 # For debugging
 print(targets)
