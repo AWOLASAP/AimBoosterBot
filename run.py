@@ -1,7 +1,12 @@
 from PIL import ImageGrab
 import keyboard
-import pynput
 import time
+from pynput.mouse import Button, Controller
+
+
+# Define mouse as something
+# that can be controlled
+mouse = Controller()
 
 
 # Function to quit in case of emergency
@@ -17,18 +22,11 @@ def notClose(loc1, loc2):
             return True
     return False
 
-# Function to convert the image location
-# coordinates to full screen coordinates 
-# that can be used by pynput for the mouse
-def convertToFullscreen(coord):
-    return (coord[0] + 840, coord[1] + 730)
-
 # Add hotkey for emergency quiting
 keyboard.add_hotkey(' ', quit)
 
 # Set up variables
 run = True
-
 
 # Main loop
 while run:
@@ -42,17 +40,27 @@ while run:
     # Go through the image looking for targets
     # Does this by finding the color of the target
 
-    # Correct target color: target_color = (255, 106, 0, 255)
+    # Correct target color v 
+    target_color = (255, 255, 255, 255)
     # Testing color v
-    target_color = (255, 96, 0, 255)
+    # target_color = (255, 96, 0, 255)
     targets = [(0, 0)]
     for x in range(size[0]):
         for y in range(size[1]):
-            pixel = pixs[x, y]
-            if pixel == target_color and notClose((x+840, y+730), (targets[-1][0], targets[-1][1])):
+            if pixs[x, y] == target_color and notClose((x+840, y+730), (targets[-1][0], targets[-1][1])):
                 # Add coords to target list, adjusting 
-                # them for the fullscreen
+                # them for the fullscreen screenshot
                 targets.append((x+840, y+730))
 
-# For debugging
-print(targets)
+    # Go through each target in the gathered list
+    # and click in that location
+    for t in targets[1:]:
+        # Move the mouse over the target
+        time.sleep(0.01)
+        mouse.position = ((t[0]/3840) * 1920, (t[1]/2400) * 1200)
+        time.sleep(0.01)
+
+        # Click on the target
+        mouse.press(Button.left)
+        mouse.release(Button.left)
+    
