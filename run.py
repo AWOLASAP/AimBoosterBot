@@ -1,25 +1,36 @@
 from PIL import ImageGrab
+import keyboard
 import pynput
 import time
 
 
-# The first step is 
+# Function to quit in case of emergency
+def quit():
+    global run
+    run = False
+
+# Add hotkey for emergency quiting
+keyboard.add_hotkey(' ', quit)
+
+# Set up variables
+run = True
 
 
 
+while run:
+    screen_shot = ImageGrab.grab(bbox=(840, 730, 2040, 1570))
+    pixs = screen_shot.load()
+    size = screen_shot.size
+    target_color = (255, 106, 0, 255)
+    targets = []
+    for x in range(size[0]):
+        for y in range(size[1]):
+            pixel = pixs[x, y]
+            if pixel == target_color:
+                targets.append((x, y))
+    
+    # For debugging
+    break
 
-
-
-
-
-
-screen_shot = ImageGrab.grab(bbox=(840, 730, 2040, 1570))
-pix = screen_shot.load()
-size = screen_shot.size
-print("The image size is:", size)
-print("The pixel at 100, 100 is:", pix[100, 100])
-target = (37, 37, 37, 255)
-for x in range(size[0]):
-    for y in range(size[1]):
-        if pix[x, y] == target:
-            print("Found target at:", x, y)
+# For debugging
+print(targets)
