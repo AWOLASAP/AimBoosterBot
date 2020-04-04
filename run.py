@@ -1,11 +1,17 @@
-'''
-UL: 840 730
-UR: 2040 730
-DL: 840 1570
-DR: 2040 1570
-'''
 from PIL import ImageGrab
+import pynput
 import time
+
+
+# The first step is 
+
+
+
+
+
+
+
+
 
 screen_shot = ImageGrab.grab(bbox=(840, 730, 2040, 1570))
 pix = screen_shot.load()
